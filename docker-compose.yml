@@ -1,0 +1,41 @@
+# ============================================
+# Docker Compose - 一键启动前后端
+# ============================================
+
+services:
+  # Flask 后端 API
+  backend:
+    image: ${DOCKER_USER:-maile123}/luvoy-backend:latest
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: luvoy-backend
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend/uploads:/app/uploads
+      - db-data:/app/instance
+      - ./tableConvert.com_pn6idf.json:/app/data/jobs.json:ro
+    env_file:
+      - .env
+    environment:
+      - FLASK_ENV=production
+      - DATABASE_URL=sqlite:///instance/career_planning.db
+      - JOB_DATA_PATH=/app/data/jobs.json
+
+  # Vue3 前端 (Nginx)
+  frontend:
+    image: ${DOCKER_USER:-maile123}/luvoy-frontend:latest
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: luvoy-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  db-data:

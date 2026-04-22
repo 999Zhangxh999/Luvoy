@@ -1,0 +1,17 @@
+{
+  "name": "律途 · Luvoy | Life's Unique Voyage",
+  "short_name": "律途Luvoy",
+  "description": "Life's Unique Voyage：面向大学生的AI长期职业规划平台",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0EA5E9",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/luvoy-main-20260404.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

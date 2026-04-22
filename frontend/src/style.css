@@ -1,0 +1,1883 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== 默认/黑夜模式变量 ===== */
+:root {
+  --brand-bg: #050509;
+  --brand-bg-rgb: 5, 5, 9;
+  --brand-surface: #0d0d14;
+  --brand-card: #12121c;
+  --brand-border: #1e1e2e;
+  --brand-text: #e2e8f0;
+  --brand-muted: #64748b;
+  --brand-subtle: #334155;
+  --brand-primary: #7c3aed;
+  --brand-accent: #06b6d4;
+
+  --bg-primary: #050509;
+  --bg-surface: #0d0d14;
+  --bg-card: #12121c;
+  --bg-hover: #1a1a28;
+  --bg-page: #050509;
+  --border: #1e1e2e;
+  --accent-purple: #7c3aed;
+  --accent-cyan: #06b6d4;
+
+  /* Legacy variables for AboutView compatibility */
+  --primary: #7c3aed;
+  --primary-light: #a78bfa;
+  --primary-50: rgba(124, 58, 237, 0.1);
+  --primary-gradient: linear-gradient(135deg, #7c3aed, #06b6d4);
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --info: #06b6d4;
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+
+  --scrollbar-track: #050509;
+  --scrollbar-thumb: #1e1e2e;
+}
+
+/* ===== 白天模式 (青色蓝色白色) ===== */
+html.light,
+html.light body,
+.light {
+  --brand-bg: #f0f9ff !important;
+  --brand-bg-rgb: 240, 249, 255 !important;
+  --brand-surface: #ffffff !important;
+  --brand-card: #ffffff !important;
+  --brand-border: #e0f2fe !important;
+  --brand-text: #0c4a6e !important;
+  --brand-muted: #64748b !important;
+  --brand-subtle: #94a3b8 !important;
+  --brand-primary: #0891b2 !important;
+  --brand-accent: #06b6d4 !important;
+
+  --bg-primary: #f0f9ff !important;
+  --bg-surface: #ffffff !important;
+  --bg-card: #ffffff !important;
+  --bg-hover: #e0f2fe !important;
+  --bg-page: #f0f9ff !important;
+  --border: #bae6fd !important;
+  --accent-purple: #0891b2 !important;
+  --accent-cyan: #06b6d4 !important;
+
+  --primary: #0891b2 !important;
+  --primary-light: #22d3ee !important;
+  --primary-50: rgba(8, 145, 178, 0.1) !important;
+  --primary-gradient: linear-gradient(135deg, #0891b2, #06b6d4) !important;
+  --success: #059669 !important;
+  --warning: #d97706 !important;
+  --danger: #dc2626 !important;
+  --info: #0284c7 !important;
+  --text-primary: #0c4a6e !important;
+  --text-secondary: #475569 !important;
+  --text-muted: #64748b !important;
+  --shadow: 0 4px 24px rgba(0, 149, 199, 0.1) !important;
+  --shadow-lg: 0 8px 32px rgba(0, 149, 199, 0.15) !important;
+
+  --scrollbar-track: #f0f9ff !important;
+  --scrollbar-thumb: #bae6fd !important;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--brand-bg);
+  color: var(--brand-text);
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* 白天模式背景强制覆盖 */
+html.light body,
+html.light #app,
+html.light main,
+html.light .bg-brand-bg {
+  background-color: #f0f9ff !important;
+}
+
+/* 登录页排除min-h-screen的背景覆盖 */
+html.light .min-h-screen:not(.login-page) {
+  background-color: #f0f9ff !important;
+}
+
+/* 登录页背景透明，显示动态背景 */
+html.light .login-page,
+.login-page {
+  background-color: transparent !important;
+}
+
+html.light .bg-brand-card,
+html.light .card,
+html.light .card-sm {
+  background-color: #ffffff !important;
+}
+
+html.light .bg-brand-surface {
+  background-color: #ffffff !important;
+}
+
+html.light .text-brand-text {
+  color: #0c4a6e !important;
+}
+
+html.light .text-brand-muted {
+  color: #64748b !important;
+}
+
+html.light .border-brand-border {
+  border-color: #e0f2fe !important;
+}
+
+/* 主题切换过渡 */
+body,
+#app,
+main,
+.min-h-screen,
+.bg-brand-bg,
+.bg-brand-card,
+.bg-brand-surface,
+.card,
+.card-sm,
+.text-brand-text,
+.text-brand-muted,
+.border-brand-border,
+.glass-nav {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+}
+
+/* 噪点纹理覆盖层 - 仅黑夜模式 */
+.dark body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAUVBMVEWFhYWDg4N3d3dtbW17e3t1dXWBgYGHh4t5eXlzc3OLi4ubm5uVlZWPj4+NjY19fX2JiYl/f39ra2uRkZGZmZlpaWmXl5dvb29xcXGTk5NnZ2c8TV1mAAAAG3RSTlNAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAvEOwtAAAFVklEQVR4XpWWB67c2BUFb3g557T/hRo9/WUMZHlgr4Tg");
+  opacity: 0.02;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* 滚动条美化 */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brand-primary);
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-6 py-3 rounded-xl font-semibold text-sm text-white transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0;
+    background: linear-gradient(135deg, var(--brand-primary), var(--brand-accent));
+    box-shadow: 0 0 20px rgba(var(--brand-primary), 0.3);
+  }
+
+  .btn-primary:hover {
+    filter: brightness(1.1);
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 rounded-xl font-semibold text-sm border border-brand-border text-brand-text bg-brand-card hover:bg-brand-surface transition-all duration-200;
+  }
+
+  .btn-ghost {
+    @apply px-4 py-2 rounded-lg text-sm text-brand-muted hover:text-brand-text hover:bg-brand-card transition-all duration-150;
+  }
+
+  .card {
+    @apply bg-brand-card border border-brand-border rounded-2xl p-6 transition-all duration-300;
+  }
+
+  .card-sm {
+    @apply bg-brand-card border border-brand-border rounded-xl p-4 transition-all duration-200;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium;
+  }
+
+  .badge-cyan {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20;
+  }
+
+  .badge-green {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20;
+  }
+
+  .badge-orange {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20;
+  }
+
+  .input-base {
+    @apply w-full bg-brand-surface border border-brand-border rounded-xl px-4 py-3 text-brand-text placeholder-brand-muted focus:outline-none transition-all duration-200;
+  }
+
+  .input-field {
+    @apply w-full bg-brand-surface border border-brand-border rounded-xl px-4 py-2.5 text-brand-text placeholder-brand-muted focus:outline-none transition-all text-sm;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, var(--brand-primary), var(--brand-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl font-bold text-brand-text mb-4;
+  }
+
+  .section-subtitle {
+    @apply text-brand-muted text-lg max-w-2xl mx-auto;
+  }
+
+  .glass-nav {
+    background-color: rgba(var(--brand-bg-rgb, 15, 23, 42), 0.8);
+    @apply backdrop-blur-xl border-b border-brand-border;
+  }
+}
+
+/* ===== 白天模式全局样式覆盖 ===== */
+
+/* Slate 颜色系统 - 白天模式替换 */
+html.light .bg-slate-900,
+html.light .bg-slate-800,
+html.light .bg-slate-800\/50,
+html.light .bg-slate-800\/30 {
+  background-color: #ffffff !important;
+}
+
+html.light .border-slate-700,
+html.light .border-slate-600 {
+  border-color: #e0f2fe !important;
+}
+
+html.light .text-slate-300,
+html.light .text-slate-400,
+html.light .text-slate-500 {
+  color: #64748b !important;
+}
+
+html.light .text-slate-200,
+html.light .text-slate-100 {
+  color: #0c4a6e !important;
+}
+
+html.light .hover\:bg-slate-800:hover,
+html.light .hover\:bg-slate-800\/50:hover {
+  background-color: #e0f2fe !important;
+}
+
+html.light .hover\:text-slate-200:hover {
+  color: #0891b2 !important;
+}
+
+/* 背景光晕装饰 - 白天模式使用青色 */
+html.light .bg-violet-600\/8,
+html.light .bg-violet-600\/6,
+html.light .bg-violet-500\/20,
+html.light .bg-purple-500\/20,
+html.light .bg-purple-500\/30 {
+  background-color: rgba(8, 145, 178, 0.08) !important;
+}
+
+html.light .bg-violet-900\/30 {
+  background-color: rgba(8, 145, 178, 0.08) !important;
+}
+
+html.light .bg-cyan-600\/6 {
+  background-color: rgba(6, 182, 212, 0.08) !important;
+}
+
+/* 文字颜色 */
+html.light .text-violet-300,
+html.light .text-violet-400,
+html.light .text-purple-400 {
+  color: #0891b2 !important;
+}
+
+/* 边框颜色 */
+html.light .border-violet-500\/20,
+html.light .border-violet-500\/40,
+html.light .border-violet-500\/50 {
+  border-color: rgba(8, 145, 178, 0.3) !important;
+}
+
+/* 背景色 */
+html.light .bg-violet-500\/10,
+html.light .bg-violet-500\/15,
+html.light .bg-purple-500\/10 {
+  background-color: rgba(8, 145, 178, 0.1) !important;
+}
+
+/* 渐变文字 */
+html.light .gradient-text {
+  background: linear-gradient(135deg, #0891b2, #06b6d4) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+}
+
+/* 按钮主色 */
+html.light .btn-primary {
+  background: linear-gradient(135deg, #0891b2, #06b6d4) !important;
+  box-shadow: 0 0 20px rgba(8, 145, 178, 0.3) !important;
+}
+
+html.light .btn-primary:hover {
+  box-shadow: 0 0 30px rgba(8, 145, 178, 0.4) !important;
+}
+
+/* 卡片样式 */
+html.light .card:hover {
+  border-color: rgba(8, 145, 178, 0.3) !important;
+  box-shadow: 0 0 20px rgba(8, 145, 178, 0.1) !important;
+}
+
+html.light .btn-secondary:hover {
+  border-color: rgba(8, 145, 178, 0.5) !important;
+}
+
+html.light .badge {
+  background-color: rgba(8, 145, 178, 0.1) !important;
+  color: #0891b2 !important;
+  border-color: rgba(8, 145, 178, 0.2) !important;
+}
+
+html.light .input-base:focus,
+html.light .input-field:focus {
+  border-color: #0891b2 !important;
+  box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.1) !important;
+}
+
+/* 焦点边框 */
+html.light .focus-within\:border-violet-500\/50:focus-within {
+  border-color: rgba(8, 145, 178, 0.5) !important;
+}
+
+/* 悬停效果 */
+html.light .hover\:text-violet-400:hover,
+html.light .hover\:text-violet-300:hover {
+  color: #0891b2 !important;
+}
+
+html.light .hover\:border-violet-500\/40:hover {
+  border-color: rgba(8, 145, 178, 0.4) !important;
+}
+
+/* 标签徽章 */
+html.light .badge-cyan {
+  background-color: rgba(6, 182, 212, 0.1) !important;
+  color: #0891b2 !important;
+  border-color: rgba(6, 182, 212, 0.2) !important;
+}
+
+html.light .badge-green {
+  background-color: rgba(16, 185, 129, 0.1) !important;
+  color: #059669 !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+}
+
+html.light .badge-orange {
+  background-color: rgba(245, 158, 11, 0.1) !important;
+  color: #d97706 !important;
+  border-color: rgba(245, 158, 11, 0.2) !important;
+}
+
+/* 装饰条 */
+html.light .bg-violet-500 {
+  background-color: #0891b2 !important;
+}
+
+html.light .bg-violet-400 {
+  background-color: #06b6d4 !important;
+}
+
+/* 导航栏和渐变 */
+html.light .from-violet-600,
+html.light .from-violet-500 {
+  --tw-gradient-from: #0891b2 !important;
+}
+
+html.light .via-purple-500,
+html.light .via-purple-600 {
+  --tw-gradient-via: #06b6d4 !important;
+}
+
+html.light .to-indigo-600,
+html.light .to-indigo-700,
+html.light .to-cyan-500,
+html.light .to-cyan-600 {
+  --tw-gradient-to: #22d3ee !important;
+}
+
+html.light .from-cyan-500 {
+  --tw-gradient-from: #06b6d4 !important;
+}
+
+html.light .to-teal-500,
+html.light .to-teal-600 {
+  --tw-gradient-to: #14b8a6 !important;
+}
+
+/* 表单元素 */
+html.light select,
+html.light input[type="text"],
+html.light input[type="email"],
+html.light input[type="password"],
+html.light textarea {
+  background-color: #ffffff !important;
+  border-color: #e0f2fe !important;
+  color: #0c4a6e !important;
+}
+
+html.light select:focus,
+html.light input:focus,
+html.light textarea:focus {
+  border-color: #0891b2 !important;
+  box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.1) !important;
+}
+
+/* 模态框背景 */
+html.light .bg-black\/60,
+html.light .bg-black\/70 {
+  background-color: rgba(15, 23, 42, 0.5) !important;
+}
+
+/* 玻璃效果导航栏 */
+html.light .glass-nav {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border-color: #e0f2fe !important;
+}
+
+/* 阴影效果 */
+html.light .shadow-card {
+  box-shadow: 0 4px 24px rgba(8, 145, 178, 0.08) !important;
+}
+
+/* 步骤指示器 */
+html.light .bg-violet-500\/10,
+html.light .bg-indigo-500\/10,
+html.light .bg-purple-500\/10 {
+  background-color: rgba(8, 145, 178, 0.1) !important;
+}
+
+/* 图标颜色 */
+html.light .text-indigo-400,
+html.light .text-indigo-500 {
+  color: #0891b2 !important;
+}
+
+/* 橙色悬停 */
+html.light .text-orange-400,
+html.light .text-orange-500 {
+  color: #ea580c !important;
+}
+
+/* 粉色 */
+html.light .text-pink-400,
+html.light .text-pink-500 {
+  color: #db2777 !important;
+}
+
+/* ===== 黑夜模式样式 ===== */
+.dark .card:hover {
+  border-color: rgba(124, 58, 237, 0.3);
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+}
+
+.dark .btn-secondary:hover {
+  border-color: rgba(124, 58, 237, 0.5);
+}
+
+.dark .badge {
+  @apply bg-violet-500/10 text-violet-400 border border-violet-500/20;
+}
+
+.dark .input-base:focus,
+.dark .input-field:focus {
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.3);
+}
+
+/* 页面切换动画 */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* 滑动动画 */
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.2s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+/* 下拉动画 */
+.dropdown-enter-active,
+.dropdown-leave-active {
+  transition: all 0.15s ease;
+}
+
+.dropdown-enter-from,
+.dropdown-leave-to {
+  opacity: 0;
+  transform: translateY(-6px) scale(0.97);
+}
+
+/* 抽屉动画 */
+.drawer-enter-active,
+.drawer-leave-active {
+  transition: all 0.25s ease;
+}
+
+.drawer-enter-active .drawer-content,
+.drawer-leave-active .drawer-content {
+  transition: transform 0.25s ease;
+}
+
+.drawer-enter-from {
+  opacity: 0;
+}
+
+.drawer-enter-from .drawer-content {
+  transform: translateX(100%);
+}
+
+.drawer-leave-to {
+  opacity: 0;
+}
+
+.drawer-leave-to .drawer-content {
+  transform: translateX(100%);
+}
+
+/* 淡入上升动画 */
+.animate-fade-up {
+  animation: fadeUp 0.5s ease-out;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 脉冲发光动画 */
+@keyframes glow-pulse {
+
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* ===== 登录页背景控制 ===== */
+/* 背景样式由LoginView.vue的内联样式和JS控制 - 不需要CSS规则 */
+
+/* ===== 视图页面白天模式全局覆盖 ===== */
+
+/* 消息中心 MessageCenterView */
+html.light .message-center {
+  background-color: var(--brand-bg) !important;
+}
+
+html.light .message-center .bg-orb {
+  opacity: 0.05 !important;
+}
+
+html.light .message-center .orb-1 {
+  background: #0891b2 !important;
+}
+
+html.light .message-center .orb-2 {
+  background: #06b6d4 !important;
+}
+
+html.light .message-center .orb-3 {
+  background: #14b8a6 !important;
+}
+
+html.light .message-center .conversation-list {
+  background: var(--brand-surface) !important;
+  border-color: var(--brand-border) !important;
+}
+
+html.light .message-center .chat-area {
+  background: var(--brand-bg) !important;
+}
+
+html.light .message-center .chat-header {
+  background: var(--brand-surface) !important;
+  border-color: var(--brand-border) !important;
+}
+
+html.light .message-center .chat-input {
+  background: var(--brand-surface) !important;
+  border-color: var(--brand-border) !important;
+}
+
+html.light .message-center .conv-item:hover,
+html.light .message-center .conv-item.active {
+  background: rgba(8, 145, 178, 0.08) !important;
+}
+
+html.light .message-center .msg-bubble {
+  background: rgba(8, 145, 178, 0.1) !important;
+}
+
+html.light .message-center .msg-card {
+  background: var(--brand-surface) !important;
+  border-color: var(--brand-border) !important;
+}
+
+/* 论坛 ForumView */
+html.light .forum-page {
+  background-color: var(--brand-bg) !important;
+}
+
+html.light .forum-page .bg-gradient {
+  opacity: 0.08 !important;
+}
+
+html.light .forum-page .bg-gradient.left {
+  background: #0891b2 !important;
+}
+
+html.light .forum-page .bg-gradient.right {
+  background: #06b6d4 !important;
+}
+
+html.light .forum-page .bg-grid {
+  background-image:
+    linear-gradient(rgba(8, 145, 178, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(8, 145, 178, 0.03) 1px, transparent 1px) !important;
+}
+
+html.light .forum-page .header-bar,
+html.light .forum-page .post-card,
+html.light .forum-page .sidebar-card {
+  background: var(--brand-card) !important;
+  border-color: var(--brand-border) !important;
+}
+
+html.light .forum-page .btn-publish {
+  background: linear-gradient(135deg, #0891b2, #06b6d4) !important;
+}
+
+/* 职业图谱 JobGraphView */
+html.light .job-graph-fullscreen {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0f9ff 100%) !important;
+}
+
+html.light .job-graph-fullscreen .gradient-orb {
+  opacity: 0.15 !important;
+}
+
+html.light .job-graph-fullscreen .orb-1 {
+  background: radial-gradient(circle, rgba(8, 145, 178, 0.2), transparent) !important;
+}
+
+html.light .job-graph-fullscreen .orb-2 {
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.15), transparent) !important;
+}
+
+html.light .job-graph-fullscreen .orb-3 {
+  background: radial-gradient(circle, rgba(20, 184, 166, 0.12), transparent) !important;
+}
+
+html.light .job-graph-fullscreen .grid-lines {
+  background-image:
+    linear-gradient(rgba(8, 145, 178, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(8, 145, 178, 0.05) 1px, transparent 1px) !important;
+}
+
+html.light .job-graph-fullscreen .top-bar {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border-color: var(--brand-border) !important;
+}
+
+html.light .job-graph-fullscreen .sidebar-section,
+html.light .job-graph-fullscreen .detail-panel {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-color: var(--brand-border) !important;
+}
+
+html.light .job-graph-fullscreen .empty-state {
+  background: rgba(240, 249, 255, 0.95) !important;
+}
+
+html.light .job-graph-fullscreen .start-btn {
+  background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%) !important;
+}
+
+/* 求职广场 JobHubView */
+html.light .job-hub {
+  background-color: var(--brand-bg) !important;
+}
+
+html.light .job-hub .bg-gradient {
+  opacity: 0.1 !important;
+}
+
+html.light .job-hub .bg-gradient.left {
+  background: #0891b2 !important;
+}
+
+html.light .job-hub .bg-gradient.right {
+  background: #06b6d4 !important;
+}
+
+html.light .job-hub .bg-grid {
+  background-image:
+    linear-gradient(rgba(8, 145, 178, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(8, 145, 178, 0.03) 1px, transparent 1px) !important;
+}
+
+html.light .job-hub .particle {
+  background: radial-gradient(circle, rgba(8, 145, 178, 0.4), transparent) !important;
+}
+
+html.light .job-hub .text-wrapper .text {
+  background: linear-gradient(135deg, #0891b2, #06b6d4, #0891b2) !important;
+  background-size: 200% auto !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+html.light .job-hub .header-badge {
+  background: rgba(8, 145, 178, 0.15) !important;
+  border-color: rgba(8, 145, 178, 0.3) !important;
+  color: #0891b2 !important;
+}
+
+/* 人岗对决 ProfileArenaView */
+html.light .arena-container {
+  background-color: var(--brand-bg) !important;
+}
+
+html.light .arena-container .side-panel {
+  background: var(--brand-surface) !important;
+  border-color: var(--brand-border) !important;
+}
+
+html.light .arena-container .left-panel {
+  background: linear-gradient(135deg, rgba(8, 145, 178, 0.02), transparent) !important;
+}
+
+html.light .arena-container .right-panel {
+  background: linear-gradient(135deg, transparent, rgba(6, 182, 212, 0.02)) !important;
+}
+
+html.light .arena-container .profile-hero-compact,
+html.light .arena-container .score-badges .badge-item {
+  background: rgba(8, 145, 178, 0.08) !important;
+  border-color: rgba(8, 145, 178, 0.15) !important;
+}
+
+html.light .arena-container .job-hero-compact {
+  background: rgba(6, 182, 212, 0.08) !important;
+}
+
+/* 人才广场 TalentMarketView */
+html.light .talent-market {
+  background-color: var(--brand-bg) !important;
+}
+
+html.light .talent-market .bg-glow {
+  opacity: 0.08 !important;
+}
+
+html.light .talent-market .bg-glow.left {
+  background: #0891b2 !important;
+}
+
+html.light .talent-market .bg-glow.right {
+  background: #06b6d4 !important;
+}
+
+html.light .talent-market .talent-card {
+  background: var(--brand-card) !important;
+  border-color: var(--brand-border) !important;
+}
+
+html.light .talent-market .talent-card:hover {
+  border-color: rgba(8, 145, 178, 0.3) !important;
+}
+
+html.light .talent-market .filter-group select {
+  background: var(--brand-card) !important;
+  border-color: var(--brand-border) !important;
+  color: var(--brand-text) !important;
+}
+
+html.light .talent-market .search-box {
+  background: var(--brand-card) !important;
+  border-color: var(--brand-border) !important;
+}
+
+html.light .talent-market .btn-invite {
+  background: linear-gradient(135deg, #0891b2, #06b6d4) !important;
+}
+
+/* 规划中心 PlanningCenterViewNew */
+html.light .planning-journey {
+  background-color: var(--brand-bg) !important;
+}
+
+html.light .planning-journey .journey-bg {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%) !important;
+}
+
+html.light .planning-journey .gradient-orb {
+  opacity: 0.1 !important;
+}
+
+html.light .planning-journey .step-card,
+html.light .planning-journey .chat-box {
+  background: var(--brand-card) !important;
+  border-color: var(--brand-border) !important;
+}
+
+/* 关于页面 AboutView */
+html.light .about-page {
+  background-color: var(--brand-bg) !important;
+}
+
+html.light .about-page .about-sidebar,
+html.light .about-page .content-header {
+  background: var(--brand-card) !important;
+  border-color: var(--brand-border) !important;
+}
+
+/* ===== 通用装饰元素白天模式 ===== */
+
+/* 所有紫色装饰球体转为青色 */
+html.light [class*="bg-orb"],
+html.light [class*="gradient-orb"],
+html.light [class*="bg-glow"] {
+  filter: hue-rotate(-60deg) saturate(0.8) !important;
+}
+
+/* 所有rgba紫色背景转换 */
+html.light [style*="rgba(139, 92, 246"] {
+  --tw-bg-opacity: 0.08 !important;
+}
+
+/* 渐变按钮统一处理 */
+html.light [style*="linear-gradient(135deg, #8b5cf6"],
+html.light [style*="linear-gradient(135deg, #6366f1"] {
+  background: linear-gradient(135deg, #0891b2, #06b6d4) !important;
+}
+
+/* 网格背景透明度降低 */
+html.light [class*="bg-grid"] {
+  opacity: 0.5 !important;
+}
+
+/* 阴影颜色调整 */
+html.light [style*="box-shadow"][style*="rgba(139, 92, 246"] {
+  box-shadow: 0 4px 20px rgba(8, 145, 178, 0.2) !important;
+}
+
+/* ===== 页面特定CSS变量覆盖 ===== */
+html.light {
+  /* 职业图谱页面 */
+  --job-graph-bg: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0f9ff 100%);
+  --graph-topbar-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+  --graph-search-bg: rgba(255, 255, 255, 0.9);
+  --graph-search-focus-bg: rgba(255, 255, 255, 1);
+  --graph-dropdown-bg: rgba(255, 255, 255, 0.98);
+  --brand-primary-rgb: 8, 145, 178;
+
+  /* 消息中心装饰球体 */
+  --orb-color-1: #0891b2;
+  --orb-color-2: #06b6d4;
+  --orb-color-3: #14b8a6;
+
+  /* 论坛背景光晕 */
+  --forum-glow-left: #0891b2;
+  --forum-glow-right: #06b6d4;
+
+  /* 求职广场背景光晕 */
+  --hub-glow-left: #0891b2;
+  --hub-glow-right: #06b6d4;
+
+  /* 人才广场背景光晕 */
+  --talent-glow-left: #0891b2;
+  --talent-glow-right: #06b6d4;
+
+  /* 规划中心 */
+  --planning-bg: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0f9ff 100%);
+  --orb-primary: #0891b2;
+
+  /* 按钮渐变 */
+  --btn-primary-gradient: linear-gradient(135deg, #0891b2, #06b6d4);
+  --gradient-text-bg: linear-gradient(135deg, #0891b2 0%, #06b6d4 50%, #14b8a6 100%);
+}
+
+/* ===== 全局渐变按钮白天模式覆盖 ===== */
+
+/* 所有紫色渐变按钮转为青色 */
+html.light .btn-generate,
+html.light .btn-compare,
+html.light .btn-publish,
+html.light .btn-primary,
+html.light .btn-invite,
+html.light .start-btn,
+html.light .card-btn,
+html.light .send-btn.active,
+html.light [class*="btn"][style*="linear-gradient"] {
+  background: linear-gradient(135deg, #0891b2, #06b6d4) !important;
+  box-shadow: 0 4px 20px rgba(8, 145, 178, 0.3) !important;
+}
+
+/* Tab指示器和徽章 */
+html.light .tab-indicator,
+html.light .tab-btn.active,
+html.light .vs-badge,
+html.light .tab-badge,
+html.light .header-badge {
+  background: linear-gradient(135deg, #0891b2, #06b6d4) !important;
+}
+
+/* 渐变文字 */
+html.light .gradient-text,
+html.light .text-wrapper .text,
+html.light .brand-title {
+  background: linear-gradient(135deg, #0891b2, #06b6d4) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+}
+
+/* ===== 分析页面白天模式覆盖 ===== */
+
+/* ProfileDeepAnalysisView */
+html.light .deep-analysis {
+  background: var(--brand-bg) !important;
+}
+
+html.light .deep-analysis .analysis-header {
+  background: linear-gradient(180deg, rgba(8, 145, 178, 0.08) 0%, transparent 100%) !important;
+  border-color: rgba(8, 145, 178, 0.1) !important;
+}
+
+html.light .deep-analysis .select-input {
+  background: rgba(8, 145, 178, 0.08) !important;
+  border-color: rgba(8, 145, 178, 0.2) !important;
+}
+
+html.light .deep-analysis .select-input:focus {
+  border-color: rgba(8, 145, 178, 0.5) !important;
+}
+
+/* ProfileAnalysisHub */
+html.light .profile-header {
+  background: linear-gradient(180deg, rgba(8, 145, 178, 0.08) 0%, transparent 100%) !important;
+  border-color: rgba(8, 145, 178, 0.1) !important;
+}
+
+html.light .tab-container {
+  background: rgba(8, 145, 178, 0.05) !important;
+  border-color: rgba(8, 145, 178, 0.15) !important;
+}
+
+/* ===== 其他页面白天模式覆盖 ===== */
+
+/* ApplicationsView */
+html.light .applications-page {
+  background: var(--brand-bg) !important;
+}
+
+/* JobMarketView */
+html.light .job-market {
+  background: var(--brand-bg) !important;
+}
+
+/* JobListView */
+html.light .job-list-page {
+  background: var(--brand-bg) !important;
+}
+
+/* StudentListView / StudentProfileView */
+html.light .student-page,
+html.light .student-list-page {
+  background: var(--brand-bg) !important;
+}
+
+/* SettingsView */
+html.light .settings-page {
+  background: var(--brand-bg) !important;
+}
+
+/* ===== 通用卡片和容器白天模式 ===== */
+
+/* 所有使用rgba紫色背景的元素 */
+html.light [style*="rgba(139, 92, 246, 0.1)"],
+html.light [style*="rgba(139, 92, 246, 0.08)"],
+html.light [style*="rgba(139, 92, 246, 0.05)"] {
+  background-color: rgba(8, 145, 178, 0.08) !important;
+}
+
+/* 所有使用rgba紫色边框的元素 */
+html.light [style*="border"][style*="rgba(139, 92, 246"] {
+  border-color: rgba(8, 145, 178, 0.2) !important;
+}
+
+/* 图标颜色替换 */
+html.light i[style*="color: #8b5cf6"],
+html.light i[style*="color: #6366f1"],
+html.light i[style*="color: #a78bfa"] {
+  color: #0891b2 !important;
+}
+
+html.light .header-content h1 i,
+html.light .page-title i,
+html.light .brand-icon {
+  color: #0891b2 !important;
+}
+
+/* 悬停效果 */
+html.light .tab-btn:hover:not(.active),
+html.light .nav-item:hover,
+html.light .conv-item:hover {
+  background: rgba(8, 145, 178, 0.08) !important;
+}
+
+html.light .tab-btn:hover:not(.active) {
+  border-color: rgba(8, 145, 178, 0.4) !important;
+  color: #0891b2 !important;
+}
+
+/* 进度条和填充 */
+html.light .progress-fill,
+html.light .bar-fill,
+html.light .ability-fill {
+  background: linear-gradient(90deg, #0891b2, #06b6d4) !important;
+}
+
+/* 头像和Logo背景 */
+html.light .avatar[style*="linear-gradient(135deg, #8b5cf6"],
+html.light .profile-hero-compact .hero-avatar,
+html.light .my-avatar {
+  background: linear-gradient(135deg, #0891b2, #06b6d4) !important;
+}
+
+/* ===== ProfileArenaView 白天模式覆盖 ===== */
+html.light .arena-container {
+  background: var(--brand-bg) !important;
+}
+
+html.light .arena-container .side-panel {
+  background: var(--brand-surface) !important;
+  border-color: var(--brand-border) !important;
+}
+
+html.light .arena-container .left-panel {
+  background: linear-gradient(135deg, rgba(8, 145, 178, 0.02), transparent) !important;
+  border-right-color: rgba(8, 145, 178, 0.2) !important;
+}
+
+html.light .arena-container .right-panel {
+  background: linear-gradient(135deg, transparent, rgba(8, 145, 178, 0.02)) !important;
+  border-left-color: rgba(8, 145, 178, 0.2) !important;
+}
+
+html.light .arena-container .left-panel .panel-header,
+html.light .arena-container .profile-hero-compact {
+  background: rgba(8, 145, 178, 0.08) !important;
+}
+
+html.light .arena-container .left-panel .panel-header h3 i,
+html.light .arena-container .section-block h5 i {
+  color: #0891b2 !important;
+}
+
+html.light .arena-container .right-panel .panel-header {
+  background: rgba(8, 145, 178, 0.05) !important;
+  border-color: rgba(8, 145, 178, 0.1) !important;
+}
+
+html.light .arena-container .right-panel .panel-header h3 i {
+  color: #0891b2 !important;
+}
+
+html.light .arena-container .score-badges .badge-item {
+  background: rgba(8, 145, 178, 0.08) !important;
+  border-color: rgba(8, 145, 178, 0.15) !important;
+}
+
+html.light .arena-container .score-badges .badge-item .num {
+  color: #0891b2 !important;
+}
+
+html.light .arena-container .btn-panel.primary {
+  background: linear-gradient(135deg, #0891b2, #06b6d4) !important;
+}
+
+html.light .arena-container .btn-panel.outline {
+  border-color: rgba(8, 145, 178, 0.3) !important;
+  color: #0891b2 !important;
+}
+
+html.light .arena-container .btn-panel.outline:hover {
+  background: rgba(8, 145, 178, 0.1) !important;
+}
+
+html.light .arena-container .panel-footer {
+  background: rgba(8, 145, 178, 0.03) !important;
+  border-color: rgba(8, 145, 178, 0.1) !important;
+}
+
+html.light .arena-container .bg-glow.left {
+  background: #0891b2 !important;
+}
+
+html.light .arena-container .bg-glow.right {
+  background: #06b6d4 !important;
+}
+
+html.light .arena-container .bg-grid {
+  background-image:
+    linear-gradient(rgba(8, 145, 178, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(8, 145, 178, 0.03) 1px, transparent 1px) !important;
+}
+
+html.light .arena-container .arena-title .text {
+  background: linear-gradient(135deg, #0891b2, #06b6d4) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+html.light .arena-container .arena-title .badge {
+  background: rgba(8, 145, 178, 0.15) !important;
+  border-color: rgba(8, 145, 178, 0.3) !important;
+  color: #0891b2 !important;
+}
+
+html.light .arena-container .profile-card.personal .card-glow {
+  background: linear-gradient(135deg, #0891b2, #06b6d4) !important;
+}
+
+html.light .arena-container .profile-card.job .card-glow {
+  background: linear-gradient(135deg, #06b6d4, #0891b2) !important;
+}
+
+html.light .arena-container .card-frame {
+  background: var(--brand-card) !important;
+}
+
+html.light .arena-container .profile-card.personal .card-type {
+  background: rgba(8, 145, 178, 0.2) !important;
+  color: #0891b2 !important;
+}
+
+html.light .arena-container .career-timeline::before {
+  background: linear-gradient(180deg, #06b6d4, #0891b2) !important;
+}
+
+html.light .arena-container .timeline-item .timeline-dot {
+  background: #06b6d4 !important;
+}
+
+html.light .arena-container .timeline-item.current .timeline-dot {
+  background: #0891b2 !important;
+  box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.2) !important;
+}
+
+/* ===== ProfileDeepAnalysisView 白天模式覆盖 ===== */
+html.light .deep-analysis {
+  background: var(--brand-bg) !important;
+}
+
+html.light .deep-analysis .analysis-header {
+  background: linear-gradient(180deg, rgba(8, 145, 178, 0.1) 0%, transparent 100%) !important;
+  border-bottom-color: rgba(8, 145, 178, 0.1) !important;
+}
+
+html.light .deep-analysis .header-content h1 i {
+  color: #0891b2 !important;
+}
+
+html.light .deep-analysis .tab-btn {
+  border-color: rgba(8, 145, 178, 0.2) !important;
+}
+
+html.light .deep-analysis .tab-btn:hover {
+  border-color: rgba(8, 145, 178, 0.4) !important;
+  color: #0891b2 !important;
+}
+
+html.light .deep-analysis .tab-btn.active {
+  background: linear-gradient(135deg, #0891b2, #06b6d4) !important;
+  border-color: transparent !important;
+}
+
+html.light .deep-analysis .select-input {
+  background: rgba(8, 145, 178, 0.08) !important;
+  border-color: rgba(8, 145, 178, 0.2) !important;
+}
+
+html.light .deep-analysis .select-input:focus {
+  border-color: rgba(8, 145, 178, 0.5) !important;
+}
+
+html.light .deep-analysis .vs-badge {
+  background: linear-gradient(135deg, #0891b2, #06b6d4) !important;
+}
+
+html.light .deep-analysis .btn-generate,
+html.light .deep-analysis .btn-compare {
+  background: linear-gradient(135deg, #0891b2, #06b6d4) !important;
+}
+
+html.light .deep-analysis .btn-generate:hover,
+html.light .deep-analysis .btn-compare:hover {
+  box-shadow: 0 6px 20px rgba(8, 145, 178, 0.4) !important;
+}
+
+/* ===== ProfileAnalysisHub 白天模式覆盖 ===== */
+html.light .profile-hub {
+  background: var(--brand-bg) !important;
+}
+
+html.light .profile-hub .profile-header {
+  background: linear-gradient(180deg, rgba(8, 145, 178, 0.08) 0%, transparent 100%) !important;
+  border-color: rgba(8, 145, 178, 0.1) !important;
+}
+
+html.light .profile-hub .gradient-text {
+  background: linear-gradient(135deg, #0891b2 0%, #06b6d4 50%, #14b8a6 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+html.light .profile-hub .tab-container {
+  background: rgba(8, 145, 178, 0.05) !important;
+  border-color: rgba(8, 145, 178, 0.15) !important;
+}
+
+html.light .profile-hub .tab-badge {
+  background: linear-gradient(135deg, #0891b2, #06b6d4) !important;
+}
+
+html.light .profile-hub .tab-indicator {
+  background: linear-gradient(135deg, #0891b2, #06b6d4) !important;
+}
+
+/* ===== HomeView 白天模式覆盖 ===== */
+html.light .home-page,
+html.light [class*="home-container"] {
+  background: var(--brand-bg) !important;
+}
+
+/* ===== 卡片背景覆盖 ===== */
+html.light [class*="card-frame"],
+html.light [class*="skill-card"],
+html.light [class*="stat-card"],
+html.light [class*="feature-card"],
+html.light [class*="action-card"] {
+  background: var(--brand-card) !important;
+  border-color: var(--brand-border) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ██╗   ██╗ ██████╗ ██████╗ ██╗██╗     ███████╗
+   ████╗ ████║██╔═══██╗██╔══██╗██║██║     ██╔════╝
+   ██╔████╔██║██║   ██║██████╔╝██║██║     █████╗  
+   ██║╚██╔╝██║██║   ██║██╔══██╗██║██║     ██╔══╝  
+   ██║ ╚═╝ ██║╚██████╔╝██████╔╝██║███████╗███████╗
+   ╚═╝     ╚═╝ ╚═════╝ ╚═════╝ ╚═╝╚══════╝╚══════╝
+   移动端适配样式 - Mobile Responsive Styles
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ===== Safe Area Insets for Notched Devices ===== */
+:root {
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-right: env(safe-area-inset-right, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-left: env(safe-area-inset-left, 0px);
+}
+
+/* ===== Touch Optimization ===== */
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+/* 可点击元素最小触摸区域 */
+button,
+a,
+.clickable,
+[role="button"] {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* 小按钮例外 */
+.btn-sm,
+.icon-btn {
+  min-height: 36px;
+  min-width: 36px;
+}
+
+/* ===== 移动端底部导航栏 ===== */
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--brand-card);
+  border-top: 1px solid var(--brand-border);
+  padding-bottom: var(--safe-area-bottom);
+  z-index: 100;
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-bottom-nav {
+    display: flex;
+  }
+
+  /* 页面底部增加padding，避免被底部导航遮挡 */
+  main,
+  .page-content {
+    padding-bottom: calc(70px + var(--safe-area-bottom)) !important;
+  }
+}
+
+.mobile-bottom-nav .nav-items {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  padding: 8px 0;
+}
+
+.mobile-bottom-nav .nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 12px;
+  color: var(--brand-muted);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  min-width: 60px;
+}
+
+.mobile-bottom-nav .nav-item.active {
+  color: var(--brand-primary);
+}
+
+.mobile-bottom-nav .nav-item i {
+  font-size: 20px;
+  margin-bottom: 2px;
+}
+
+.mobile-bottom-nav .nav-item span {
+  font-size: 10px;
+  font-weight: 500;
+}
+
+/* ===== 移动端响应式布局 ===== */
+@media (max-width: 640px) {
+
+  /* 基础调整 */
+  html {
+    font-size: 14px;
+  }
+
+  /* 移动端内边距 */
+  .px-4,
+  .px-6,
+  .px-8 {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  /* 标题尺寸 */
+  h1,
+  .text-4xl,
+  .text-5xl,
+  .text-6xl {
+    font-size: 1.75rem !important;
+    line-height: 1.2 !important;
+  }
+
+  h2,
+  .text-3xl {
+    font-size: 1.5rem !important;
+  }
+
+  h3,
+  .text-2xl {
+    font-size: 1.25rem !important;
+  }
+
+  /* 栅格系统移动适配 */
+  .grid-cols-2,
+  .grid-cols-3,
+  .grid-cols-4,
+  .grid-cols-5 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .md\:grid-cols-3,
+  .md\:grid-cols-4,
+  .md\:grid-cols-5 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* 单列布局 */
+  .mobile-single-col {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* 隐藏桌面端元素 */
+  .desktop-only {
+    display: none !important;
+  }
+
+  /* 显示移动端元素 */
+  .mobile-only {
+    display: block !important;
+  }
+
+  /* 卡片圆角缩小 */
+  .rounded-2xl,
+  .rounded-3xl {
+    border-radius: 12px !important;
+  }
+
+  /* 间距调整 */
+  .gap-6,
+  .gap-8 {
+    gap: 12px !important;
+  }
+
+  .mb-8,
+  .mb-10,
+  .mb-12 {
+    margin-bottom: 24px !important;
+  }
+
+  /* 按钮全宽 */
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .flex-wrap-mobile {
+    flex-wrap: wrap;
+  }
+
+  .flex-wrap-mobile>* {
+    flex: 1 1 100%;
+  }
+}
+
+/* ===== 中等屏幕 (平板) ===== */
+@media (min-width: 641px) and (max-width: 1024px) {
+
+  .grid-cols-3,
+  .grid-cols-4,
+  .grid-cols-5 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .md\:grid-cols-5 {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+/* ===== 移动端导航栏优化 ===== */
+@media (max-width: 768px) {
+  .glass-nav {
+    padding-top: var(--safe-area-top);
+  }
+
+  .glass-nav .max-w-7xl {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  /* 移动端菜单全屏 */
+  .mobile-menu-fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--brand-bg);
+    z-index: 200;
+    padding-top: calc(60px + var(--safe-area-top));
+    padding-bottom: var(--safe-area-bottom);
+    overflow-y: auto;
+  }
+}
+
+/* ===== 移动端卡片样式优化 ===== */
+@media (max-width: 640px) {
+
+  .card,
+  .card-sm {
+    padding: 16px !important;
+  }
+
+  /* 推荐卡片轮播改为滑动 */
+  .recommend-carousel {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .recommend-carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  .recommend-carousel .recommend-card {
+    scroll-snap-align: start;
+    min-width: 280px;
+  }
+}
+
+/* ===== 移动端表单优化 ===== */
+@media (max-width: 640px) {
+
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+    /* 防止iOS自动缩放 */
+  }
+
+  .input-base,
+  .input-field {
+    padding: 14px 16px !important;
+  }
+}
+
+/* ===== 移动端模态框优化 ===== */
+@media (max-width: 640px) {
+
+  .modal-content,
+  [class*="modal"]>div {
+    margin: 0 !important;
+    max-width: 100% !important;
+    max-height: 100vh !important;
+    border-radius: 0 !important;
+    padding-top: var(--safe-area-top);
+    padding-bottom: var(--safe-area-bottom);
+  }
+
+  /* 底部弹出式模态框 */
+  .modal-bottom-sheet {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-height: 85vh;
+    border-radius: 20px 20px 0 0 !important;
+    padding-bottom: var(--safe-area-bottom);
+    animation: slideUpModal 0.3s ease;
+  }
+
+  @keyframes slideUpModal {
+    from {
+      transform: translateY(100%);
+    }
+
+    to {
+      transform: translateY(0);
+    }
+  }
+}
+
+/* ===== 移动端滚动优化 ===== */
+@media (max-width: 768px) {
+
+  /* 水平滚动容器 */
+  .scroll-x-mobile {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .scroll-x-mobile::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scroll-x-mobile>* {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+  }
+
+  /* 平滑滚动 */
+  .smooth-scroll {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ===== 移动端返回顶部按钮 ===== */
+@media (max-width: 768px) {
+  [class*="fixed"][class*="bottom-8"][class*="right-8"] {
+    bottom: calc(80px + var(--safe-area-bottom)) !important;
+    right: 16px !important;
+  }
+}
+
+/* ===== 移动端 Footer 隐藏 ===== */
+@media (max-width: 768px) {
+
+  footer,
+  .app-footer {
+    display: none !important;
+  }
+}
+
+/* ===== 移动端搜索栏优化 ===== */
+@media (max-width: 640px) {
+  .search-bar-mobile {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--brand-bg);
+    padding: 12px 16px;
+    margin: 0 -16px;
+    border-bottom: 1px solid var(--brand-border);
+  }
+}
+
+/* ===== 图表响应式 ===== */
+@media (max-width: 640px) {
+
+  .chart-container,
+  [class*="chart"] canvas {
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 200px;
+  }
+}
+
+/* ===== 触摸反馈 ===== */
+@media (hover: none) and (pointer: coarse) {
+
+  button:active,
+  a:active,
+  .clickable:active {
+    opacity: 0.7;
+    transform: scale(0.98);
+  }
+
+  .card:active,
+  .card-sm:active {
+    transform: scale(0.99);
+    opacity: 0.95;
+  }
+}
+
+/* ===== 禁用桌面端hover效果在移动端 ===== */
+@media (hover: none) {
+
+  .card:hover,
+  .card-sm:hover,
+  .btn-primary:hover,
+  .btn-secondary:hover {
+    transform: none !important;
+    box-shadow: inherit !important;
+  }
+}
+
+/* ===== 横屏适配 ===== */
+@media (max-height: 500px) and (orientation: landscape) {
+  .glass-nav {
+    padding-top: 0;
+  }
+
+  .mobile-bottom-nav {
+    display: none !important;
+  }
+
+  main,
+  .page-content {
+    padding-bottom: 20px !important;
+  }
+}
+
+/* ===== 深色模式下移动端特定样式 ===== */
+@media (max-width: 768px) {
+  .dark .mobile-bottom-nav {
+    background: rgba(18, 18, 28, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
+/* ===== 亮色模式下移动端特定样式 ===== */
+@media (max-width: 768px) {
+  html.light .mobile-bottom-nav {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
+/* ===== 打印隐藏移动端导航 ===== */
+@media print {
+
+  .mobile-bottom-nav,
+  .glass-nav {
+    display: none !important;
+  }
+}
+
+/* ===== 移动端字体平滑 ===== */
+@media (max-width: 768px) {
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+}
+
+/* ===== Capacitor/Cordova App 特定样式 ===== */
+.capacitor-app,
+.cordova-app {
+  /* 禁用选择 */
+  user-select: none;
+  -webkit-user-select: none;
+
+  /* 禁用长按菜单 */
+  -webkit-touch-callout: none;
+}
+
+.capacitor-app .selectable,
+.cordova-app .selectable {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+/* ===== iOS 状态栏适配 ===== */
+.ios-status-bar-padding {
+  padding-top: env(safe-area-inset-top, 20px);
+}
+
+/* ===== Android 导航栏适配 ===== */
+.android-nav-padding {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* ===== 移动端统计卡片 ===== */
+@media (max-width: 640px) {
+
+  .stat-card,
+  .quick-stat {
+    padding: 12px !important;
+  }
+
+  .stat-card .stat-num,
+  .quick-stat .stat-value {
+    font-size: 1.25rem !important;
+  }
+}
+
+/* ===== 移动端角色选择卡片 ===== */
+@media (max-width: 640px) {
+  .role-cards {
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+
+  .role-card {
+    width: 100% !important;
+    max-width: none !important;
+  }
+}
+
+/* ===== 移动端底部操作栏 ===== */
+@media (max-width: 640px) {
+  .bottom-actions {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  .bottom-actions .action-item {
+    flex: 1 1 45% !important;
+    min-width: 0 !important;
+  }
+}
+
+/* ===== 移动端标签云 ===== */
+@media (max-width: 640px) {
+
+  .tag-cloud,
+  .flex-wrap {
+    gap: 6px !important;
+  }
+
+  .tag-cloud span,
+  .tag,
+  .badge {
+    font-size: 11px !important;
+    padding: 4px 8px !important;
+  }
+}
