@@ -81,7 +81,7 @@
               </div>
               <div class="intro-content">
                 <span class="intro-badge">中国大学生服务外包创新创业大赛 · A13</span>
-                <h2 class="intro-title">律途 · Luvoy<br><span class="gradient-text">Life's Unique Voyage</span></h2>
+                <h2 class="intro-title">拓扑 · Topo<br><span class="gradient-text">Career Topology</span></h2>
                 <p class="intro-desc">
                   融合多智能体架构与大语言模型技术，为大学生提供从岗位认知、能力评估到个性化职业导航的全链路智能服务。
                 </p>

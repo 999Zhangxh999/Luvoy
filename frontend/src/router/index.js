@@ -55,20 +55,27 @@ const router = createRouter({
   }
 })
 
-// 路由守卫 - 检查认证状态（已启用游客模式，所有页面可直接访问）
+// 路由守卫
 router.beforeEach((to, from, next) => {
-  // 当从登录/注册页面离开时，强制切换回黑夜模式
-  const authPages = ['Login', 'Register']
-  if (authPages.includes(from.name) && !authPages.includes(to.name)) {
-    // 强制切换回黑夜模式
-    const root = document.documentElement
-    root.classList.add('dark')
-    root.classList.remove('light')
-    localStorage.setItem('topo-theme', 'dark')
+  // 检查本地存储中的token
+  const token = localStorage.getItem('topo-token')
+  const user = localStorage.getItem('topo-user')
+  
+  // 如果有token，更新登录状态
+  if (token && user) {
+    authStore.init()
   }
   
-  // 游客模式：所有页面都可以访问
-  next()
+  // 检查是否需要身份验证
+  if (to.meta.requiresAuth && !authStore.isLoggedIn) {
+    next('/login')
+  } else {
+    next()
+  }
+
+  // 同步主题
+  const theme = localStorage.getItem('topo-theme') || 'light'
+  document.documentElement.setAttribute('data-theme', theme)
 })
 
 export default router
