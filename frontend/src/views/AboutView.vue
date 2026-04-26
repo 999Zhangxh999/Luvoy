@@ -80,7 +80,7 @@
                 <div class="hero-circle c2"></div>
               </div>
               <div class="intro-content">
-                <span class="intro-badge">中国大学生服务外包创新创业大赛 · A13</span>
+
                 <h2 class="intro-title">拓扑 · Topo<br><span class="gradient-text">Career Topology</span></h2>
                 <p class="intro-desc">
                   融合多智能体架构与大语言模型技术，为大学生提供从岗位认知、能力评估到个性化职业导航的全链路智能服务。
@@ -201,7 +201,7 @@
               <div class="info-card">
                 <i class="bi bi-trophy"></i>
                 <h5>赛题信息</h5>
-                <p>中国大学生服务外包创新创业大赛</p>
+
                 <span class="badge badge-soft-primary">A13 · 基于AI的大学生职业规划智能体</span>
               </div>
               <div class="info-card">
