@@ -5,7 +5,7 @@
         <!-- Brand -->
         <div class="md:col-span-4">
           <div class="flex items-center gap-2.5 mb-4">
-            <img src="/logo.png" alt="拓扑 Topo 标识" class="w-10 h-10 rounded-lg shadow-md" />
+            <img src="/logo.svg" alt="拓扑 Topo 标识" class="w-10 h-10 rounded-lg shadow-md" />
             <span class="font-bold text-brand-text text-lg tracking-tight">拓扑 · Topo</span>
           </div>
           <p class="text-brand-muted text-sm leading-relaxed max-w-xs">

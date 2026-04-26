@@ -299,7 +299,7 @@
             <div class="bg-brand-card border border-brand-border rounded-2xl p-6">
               <div class="text-center py-8">
                 <div class="w-20 h-20 mx-auto rounded-2xl bg-white dark:bg-white/10 p-2 mb-4 shadow-lg">
-                  <img src="/logo.png" alt="拓扑 Topo 标识" class="w-full h-full rounded-xl" />
+                  <img src="/logo.svg" alt="拓扑 Topo 标识" class="w-full h-full rounded-xl" />
                 </div>
                 <h2 class="text-xl font-bold text-brand-text mb-2">拓扑 · Topo</h2>
                 <p class="text-sm text-brand-muted mb-4">智能职业发展规划平台</p>

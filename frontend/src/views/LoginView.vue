@@ -109,7 +109,7 @@
         <div class="text-center mb-8">
           <div class="inline-flex items-center justify-center w-18 h-18 rounded-3xl mb-6 shadow-2xl transform hover:scale-105 transition-transform bg-white/80 dark:bg-white/10 p-2.5"
                :class="isDark ? 'shadow-purple-500/30' : 'shadow-cyan-500/30'">
-            <img src="/logo.png" alt="拓扑 Topo 标识" class="w-full h-full rounded-2xl" />
+            <img src="/logo.svg" alt="拓扑 Topo 标识" class="w-full h-full rounded-2xl" />
           </div>
           <h1 class="text-4xl font-bold mb-3 tracking-tight"
               :class="isDark ? 'text-white' : 'text-slate-800'">拓扑 · Topo</h1>

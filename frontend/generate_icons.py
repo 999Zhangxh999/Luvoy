@@ -5,7 +5,7 @@ from PIL import Image
 import os
 
 # Source logo
-SOURCE = r"e:\work\Luvoy\Luvoy\frontend\logo.png"
+SOURCE = r"e:\work\Luvoy\Luvoy\frontend\logo.svg"
 
 # Android icon sizes (dp -> px)
 MIPMAP_SIZES = {

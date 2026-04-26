@@ -4,7 +4,7 @@
       <div class="flex items-center justify-between h-16">
         <!-- Logo -->
         <router-link to="/" class="flex items-center gap-2.5 group flex-shrink-0">
-          <img src="/logo.png" alt="拓扑 标识" class="w-10 h-10 rounded-lg shadow-md group-hover:scale-110 transition-transform" />
+          <img src="/logo.svg" alt="拓扑 标识" class="w-10 h-10 rounded-lg shadow-md group-hover:scale-110 transition-transform" />
           <span class="font-bold text-brand-text text-lg tracking-tight">拓扑</span>
         </router-link>
 
