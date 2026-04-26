@@ -10,11 +10,23 @@ import markdown
 from flask import Flask, request, jsonify, Response, send_from_directory
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 
 from config import config_map
 from models.database import db
 from models.job import Job, JobProfile, JobGraph
-from models.student import Student, StudentProfile, MatchResult, CareerReport
+from models.student import Student, StudentProfile, MatchResult, CareerReport, User, User, User, User, User, User
 from services.llm_client import init_llm
 from services.job_analyzer import JobAnalyzer
 from services.job_graph import JobGraphService
@@ -44,6 +56,9 @@ def create_app(config_name='default'):
     with app.app_context():
         db.create_all()
 
+    # 初始化JWT
+    jwt = JWTManager(app)
+
     with app.app_context():
         try:
             init_llm(app)
@@ -62,23 +77,125 @@ def allowed_file(filename):
 
 
 def register_api(app):
-    """注册所有 REST API 路由"""
+        """注册所有 REST API 路由"""
 
-    # 复用重量级服务，避免每个请求重复加载模型导致超时
-    service_cache = {
-        'matching_engine': None,
-        'report_generator': None,
-    }
+        # 复用重量级服务，避免每个请求重复加载模型导致超时
+        service_cache = {
+            'matching_engine': None,
+            'report_generator': None,
+        }
 
-    def get_matching_engine() -> MatchingEngine:
-        if service_cache['matching_engine'] is None:
-            service_cache['matching_engine'] = MatchingEngine()
-        return service_cache['matching_engine']
+        def get_matching_engine() -> MatchingEngine:
+            if service_cache['matching_engine'] is None:
+                service_cache['matching_engine'] = MatchingEngine()
+            return service_cache['matching_engine']
 
-    def get_report_generator() -> ReportGenerator:
-        if service_cache['report_generator'] is None:
-            service_cache['report_generator'] = ReportGenerator()
-        return service_cache['report_generator']
+        def get_report_generator() -> ReportGenerator:
+            if service_cache['report_generator'] is None:
+                service_cache['report_generator'] = ReportGenerator()
+            return service_cache['report_generator']
+
+        # 权限控制装饰器
+        def admin_required():
+            def wrapper(fn):
+                @jwt_required()
+                def decorated_view(*args, **kwargs):
+                    current_user = get_jwt_identity()
+                    user = User.query.filter_by(username=current_user).first()
+                    if not user or user.role != 'admin':
+                        return jsonify({'success': False, 'message': '管理员权限 required'}), 403
+                    return fn(*args, **kwargs)
+                return decorated_view
+            return wrapper
+
+        # 用户认证相关API
+        @app.route('/api/auth/register', methods=['POST'])
+        def api_register():
+            """用户注册"""
+            try:
+                data = request.get_json()
+                username = data.get('username')
+                email = data.get('email')
+                password = data.get('password')
+
+                if not username or not email or not password:
+                    return jsonify({'success': False, 'message': '缺少必要参数'}), 400
+
+                # 检查用户名是否已存在
+                if User.query.filter_by(username=username).first():
+                    return jsonify({'success': False, 'message': '用户名已存在'}), 400
+
+                # 检查邮箱是否已存在
+                if User.query.filter_by(email=email).first():
+                    return jsonify({'success': False, 'message': '邮箱已存在'}), 400
+
+                # 创建新用户
+                password_hash = generate_password_hash(password)
+                user = User(
+                    username=username,
+                    email=email,
+                    password_hash=password_hash,
+                    role='user'  # 默认角色
+                )
+                db.session.add(user)
+                db.session.commit()
+
+                return jsonify({
+                    'success': True,
+                    'message': '注册成功',
+                    'data': user.to_dict()
+                })
+            except Exception as e:
+                logger.error(f"注册失败: {e}")
+                return jsonify({'success': False, 'message': str(e)}), 500
+
+        @app.route('/api/auth/login', methods=['POST'])
+        def api_login():
+            """用户登录"""
+            try:
+                data = request.get_json()
+                username = data.get('username')
+                password = data.get('password')
+
+                if not username or not password:
+                    return jsonify({'success': False, 'message': '缺少必要参数'}), 400
+
+                # 查找用户
+                user = User.query.filter_by(username=username).first()
+                if not user or not check_password_hash(user.password_hash, password):
+                    return jsonify({'success': False, 'message': '用户名或密码错误'}), 401
+
+                # 创建访问令牌
+                access_token = create_access_token(identity=user.username)
+
+                return jsonify({
+                    'success': True,
+                    'message': '登录成功',
+                    'data': {
+                        'access_token': access_token,
+                        'user': user.to_dict()
+                    }
+                })
+            except Exception as e:
+                logger.error(f"登录失败: {e}")
+                return jsonify({'success': False, 'message': str(e)}), 500
+
+        @app.route('/api/auth/me', methods=['GET'])
+        @jwt_required()
+        def api_get_current_user():
+            """获取当前用户信息"""
+            try:
+                current_user = get_jwt_identity()
+                user = User.query.filter_by(username=current_user).first()
+                if not user:
+                    return jsonify({'success': False, 'message': '用户不存在'}), 404
+                return jsonify({
+                    'success': True,
+                    'data': user.to_dict()
+                })
+            except Exception as e:
+                logger.error(f"获取用户信息失败: {e}")
+                return jsonify({'success': False, 'message': str(e)}), 500
 
     # ---------- 前端 SPA 入口 ----------
     @app.route('/')
@@ -211,6 +328,7 @@ def register_api(app):
 
     # ============ 学生管理 ============
     @app.route('/api/students')
+    @jwt_required()
     def api_students():
         students = Student.query.order_by(Student.created_at.desc()).all()
         result = []
@@ -223,6 +341,7 @@ def register_api(app):
         return jsonify(result)
 
     @app.route('/api/students', methods=['POST'])
+    @jwt_required()
     def api_create_student():
         try:
             parser = ResumeParser()
@@ -266,6 +385,7 @@ def register_api(app):
             return jsonify({'success': False, 'message': str(e)}), 500
 
     @app.route('/api/students/<int:sid>', methods=['DELETE'])
+    @admin_required()
     def api_delete_student(sid):
         """删除学生及其所有关联数据"""
         try:
@@ -287,6 +407,7 @@ def register_api(app):
             return jsonify({'success': False, 'message': str(e)}), 500
 
     @app.route('/api/students/<int:sid>')
+    @jwt_required()
     def api_student_detail(sid):
         student = Student.query.get_or_404(sid)
         profile = StudentProfile.query.filter_by(student_id=sid).first()
@@ -312,6 +433,7 @@ def register_api(app):
         })
 
     @app.route('/api/students/<int:sid>/generate-profile', methods=['POST'])
+    @jwt_required()
     def api_gen_profile(sid):
         try:
             student = Student.query.get_or_404(sid)
@@ -970,6 +1092,7 @@ def register_api(app):
             return jsonify({'success': False, 'message': f'AI对话失败: {str(e)}'}), 500
 
     @app.route('/api/settings', methods=['POST'])
+    @admin_required()
     def api_update_settings():
         try:
             data = request.get_json()
