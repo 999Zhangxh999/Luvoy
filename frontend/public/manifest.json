@@ -1,0 +1,17 @@
+{
+  "name": "拓扑",
+  "short_name": "拓扑",
+  "description": "拓扑网站",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0EA5E9",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "any",
+      "type": "image/png"
+    }
+  ]
+}

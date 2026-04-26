@@ -1,0 +1,43 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="律途 Luvoy 主图标">
+  <defs>
+    <linearGradient id="sailGrad" x1="50" y1="84" x2="116" y2="186" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#A78BFA" />
+      <stop offset="1" stop-color="#4F46E5" />
+    </linearGradient>
+    <linearGradient id="hullGrad" x1="46" y1="186" x2="176" y2="214" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4F46E5" />
+      <stop offset="1" stop-color="#323a63" />
+    </linearGradient>
+    <linearGradient id="lineGrad" x1="120" y1="166" x2="220" y2="120" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4F46E5" />
+      <stop offset="1" stop-color="#3e4772" />
+    </linearGradient>
+  </defs>
+
+  <path d="M40 186H170C168 209 150 224 128 224H78C58 224 45 210 40 186Z" fill="url(#hullGrad)" stroke="#C7CAD1" stroke-width="4" stroke-linejoin="round" />
+  <path d="M84 88V176C68 171 51 171 38 176C38 140 55 108 84 88Z" fill="url(#sailGrad)" stroke="#C7CAD1" stroke-width="4" stroke-linejoin="round" />
+
+  <path d="M94 52V224" stroke="#735bae" stroke-width="6" stroke-linecap="round" />
+  <path d="M94 56C111 54 119 69 134 60C129 72 115 79 94 74V56Z" fill="#8B65C9" />
+
+  <path d="M96 166C114 166 122 154 132 146" stroke="url(#lineGrad)" stroke-width="6" stroke-linecap="round" />
+  <path d="M96 154C122 154 132 136 150 124" stroke="url(#lineGrad)" stroke-width="6" stroke-linecap="round" />
+
+  <circle cx="132" cy="146" r="7" fill="#5B50A8" />
+  <circle cx="150" cy="124" r="7" fill="#5B50A8" />
+  <circle cx="172" cy="118" r="6" fill="#5B50A8" />
+  <circle cx="194" cy="122" r="5" fill="#4B4B68" />
+  <circle cx="216" cy="122" r="7" fill="#45456A" />
+
+  <path d="M216 112H224C232 112 238 118 238 126C238 134 232 140 224 140H217" stroke="#4B4B68" stroke-width="5" stroke-linecap="round" />
+
+  <circle cx="198" cy="90" r="34" stroke="#7A63A8" stroke-width="5" />
+  <circle cx="198" cy="90" r="25" stroke="#7A63A8" stroke-width="3" />
+  <path d="M198 55V45M198 135V124M164 90H154M242 90H232" stroke="#7A63A8" stroke-width="4" stroke-linecap="round" />
+  <path d="M198 64V108" stroke="#7A63A8" stroke-width="6" stroke-linecap="round" />
+  <circle cx="198" cy="59" r="4.5" stroke="#7A63A8" stroke-width="5" fill="none" />
+  <path d="M186 76H210" stroke="#7A63A8" stroke-width="5" stroke-linecap="round" />
+  <path d="M183 98C187 106 192 111 198 111C204 111 209 106 213 98" stroke="#7A63A8" stroke-width="5" stroke-linecap="round" />
+  <path d="M183 98L190 92M213 98L206 92" stroke="#7A63A8" stroke-width="5" stroke-linecap="round" />
+  <path d="M198 111V118" stroke="#7A63A8" stroke-width="5" stroke-linecap="round" />
+</svg>

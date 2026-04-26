@@ -1,0 +1,36 @@
+# ============================================
+# Neo-Mapper 生产部署配置
+# 服务器拉取镜像直接运行 (无需 build)
+# ============================================
+
+services:
+  backend:
+    image: ${DOCKER_USER:-maile123}/luvoy-backend:latest
+    container_name: luvoy-backend
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./uploads:/app/uploads
+      - db-data:/app/instance
+      - ./jobs.json:/app/data/jobs.json:ro
+    environment:
+      - FLASK_ENV=production
+      - DATABASE_URL=sqlite:///instance/career_planning.db
+      - JOB_DATA_PATH=/app/data/jobs.json
+      # LLM 配置 (通过 .env 文件或直接设置)
+      - LLM_API_KEY=${LLM_API_KEY}
+      - LLM_BASE_URL=${LLM_BASE_URL:-https://dashscope.aliyuncs.com/compatible-mode/v1}
+      - LLM_MODEL=${LLM_MODEL:-qwen-plus}
+
+  frontend:
+    image: ${DOCKER_USER:-maile123}/luvoy-frontend:latest
+    container_name: luvoy-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  db-data:

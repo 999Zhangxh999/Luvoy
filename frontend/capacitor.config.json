@@ -1,0 +1,31 @@
+{
+    "appId": "com.luvoy.careerplus",
+    "appName": "律途 · Luvoy",
+    "webDir": "dist",
+    "bundledWebRuntime": false,
+    "server": {
+        "url": "https://luvoy.cn"
+    },
+    "plugins": {
+        "SplashScreen": {
+            "launchShowDuration": 2000,
+            "launchAutoHide": true,
+            "backgroundColor": "#050509",
+            "androidScaleType": "CENTER_CROP",
+            "showSpinner": true,
+            "spinnerColor": "#7c3aed"
+        },
+        "StatusBar": {
+            "style": "Dark",
+            "backgroundColor": "#050509"
+        }
+    },
+    "android": {
+        "buildOptions": {
+            "keystorePath": null,
+            "keystorePassword": null,
+            "keystoreAlias": null,
+            "keystoreAliasPassword": null
+        }
+    }
+}
